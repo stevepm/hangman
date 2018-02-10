@@ -15,8 +15,9 @@ defmodule Hangman.Game do
 
   def new_game(word) do
     %Game{
-      letters: word
-               |> String.codepoints()
+      letters:
+        word
+        |> String.codepoints()
     }
   end
 
@@ -29,19 +30,18 @@ defmodule Hangman.Game do
     accept_move(game, guess, MapSet.member?(used, guess))
   end
 
-  def tally(
-        %Game{
-          game_state: game_state,
-          turns_left: turns_left,
-          letters: letters,
-          used: used
-        }
-      ) do
+  def tally(%Game{
+        game_state: game_state,
+        turns_left: turns_left,
+        letters: letters,
+        used: used
+      }) do
     %{
       game_state: game_state,
       turns_left: turns_left,
-      letters: letters
-               |> reveal_guessed(used)
+      letters:
+        letters
+        |> reveal_guessed(used)
     }
   end
 
@@ -55,10 +55,11 @@ defmodule Hangman.Game do
   end
 
   defp score_guess(%Game{letters: letters, used: used} = game, true) do
-    new_state = letters
-                |> MapSet.new()
-                |> MapSet.subset?(used)
-                |> maybe_won?()
+    new_state =
+      letters
+      |> MapSet.new()
+      |> MapSet.subset?(used)
+      |> maybe_won?()
 
     %{game | game_state: new_state}
   end
@@ -85,11 +86,9 @@ defmodule Hangman.Game do
 
   defp reveal_guessed(letters, used) do
     letters
-    |> Enum.map(
-         fn (letter) ->
-           reveal_letter(letter, MapSet.member?(used, letter))
-         end
-       )
+    |> Enum.map(fn letter ->
+      reveal_letter(letter, MapSet.member?(used, letter))
+    end)
   end
 
   defp reveal_letter(letter, true) do

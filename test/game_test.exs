@@ -13,8 +13,9 @@ defmodule GameTest do
 
   test "state isn't changed for :won or :lost game" do
     for state <- [:won, :lost] do
-      game = Game.new_game()
-             |> Map.put(:game_state, state)
+      game =
+        Game.new_game()
+        |> Map.put(:game_state, state)
 
       assert ^game = Game.make_move(game, "x")
     end
@@ -79,19 +80,20 @@ defmodule GameTest do
       {"f", :bad_guess},
       {"g", :lost}
     ]
-    moves
-    |> Enum.reduce(
-         {Game.new_game("w"), 6},
-         fn ({letter, expected_state}, {game, expected_turns_left}) ->
-           %Game{turns_left: turns_left, game_state: game_state} = game = Game.make_move(game, letter)
-           case game_state do
-             :lost -> :ok
-             _ -> assert turns_left == expected_turns_left
-           end
-           assert game_state == expected_state
 
-           {game, expected_turns_left - 1}
-         end
-       )
+    moves
+    |> Enum.reduce({Game.new_game("w"), 6}, fn {letter, expected_state},
+                                               {game, expected_turns_left} ->
+      %Game{turns_left: turns_left, game_state: game_state} = game = Game.make_move(game, letter)
+
+      case game_state do
+        :lost -> :ok
+        _ -> assert turns_left == expected_turns_left
+      end
+
+      assert game_state == expected_state
+
+      {game, expected_turns_left - 1}
+    end)
   end
 end
