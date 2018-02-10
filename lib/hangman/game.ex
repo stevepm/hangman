@@ -48,6 +48,14 @@ defmodule Hangman.Game do
     %{game | game_state: new_state}
   end
 
+  defp score_guess(%Game{turns_left: 1} = game, false) do
+    %{game | game_state: :lost}
+  end
+
+  defp score_guess(%Game{turns_left: turns_left} = game, false) do
+    %{game | turns_left: turns_left - 1, game_state: :bad_guess}
+  end
+
   defp maybe_won?(true) do
     :won
   end
@@ -60,7 +68,7 @@ defmodule Hangman.Game do
     game
   end
 
-  defp tally(game) do
+  defp tally(%Game{}) do
     123
   end
 end
