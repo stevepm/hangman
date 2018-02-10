@@ -70,26 +70,28 @@ defmodule GameTest do
   end
 
   test "too many bad guesses makes you lose" do
-    game = Game.new_game("w")
-    {game, _t} = Game.make_move(game, "a")
-    assert game.game_state == :bad_guess
-    assert game.turns_left == 6
-    {game, _t} = Game.make_move(game, "b")
-    assert game.game_state == :bad_guess
-    assert game.turns_left == 5
-    {game, _t} = Game.make_move(game, "c")
-    assert game.game_state == :bad_guess
-    assert game.turns_left == 4
-    {game, _t} = Game.make_move(game, "d")
-    assert game.game_state == :bad_guess
-    assert game.turns_left == 3
-    {game, _t} = Game.make_move(game, "e")
-    assert game.game_state == :bad_guess
-    assert game.turns_left == 2
-    {game, _t} = Game.make_move(game, "x")
-    assert game.game_state == :bad_guess
-    assert game.turns_left == 1
-    {game, _t} = Game.make_move(game, "g")
-    assert game.game_state == :lost
+    moves = [
+      {"a", :bad_guess},
+      {"b", :bad_guess},
+      {"c", :bad_guess},
+      {"d", :bad_guess},
+      {"e", :bad_guess},
+      {"f", :bad_guess},
+      {"g", :lost}
+    ]
+    moves
+    |> Enum.reduce(
+         {Game.new_game("w"), 6},
+         fn ({letter, expected_state}, {game, expected_turns_left}) ->
+           {%Game{turns_left: turns_left, game_state: game_state} = game, _t} = Game.make_move(game, letter)
+           case game_state do
+             :lost -> :ok
+             _ -> assert turns_left == expected_turns_left
+           end
+           assert game_state == expected_state
+
+           {game, expected_turns_left - 1}
+         end
+       )
   end
 end
