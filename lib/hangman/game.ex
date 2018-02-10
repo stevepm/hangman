@@ -45,8 +45,8 @@ defmodule Hangman.Game do
     }
   end
 
-  defp accept_move(%Game{} = game, guess, true) do
-    game = %{game | game_state: :already_used}
+  defp accept_move(%Game{} = game, _guess, true) do
+    %{game | game_state: :already_used}
   end
 
   defp accept_move(%Game{used: used, letters: letters} = game, guess, false) do
@@ -71,16 +71,16 @@ defmodule Hangman.Game do
     %{game | turns_left: turns_left - 1, game_state: :bad_guess}
   end
 
+  defp score_guess(%Game{} = game, false) do
+    game
+  end
+
   defp maybe_won?(true) do
     :won
   end
 
   defp maybe_won?(false) do
     :good_guess
-  end
-
-  defp score_guess(%Game{} = game, false) do
-    game
   end
 
   defp reveal_guessed(letters, used) do
