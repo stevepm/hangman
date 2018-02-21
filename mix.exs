@@ -22,7 +22,7 @@ defmodule Hangman.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:dictionary, path: "../dictionary"}
+      {:dictionary, github: "stevepm/dictionary"}
     ]
   end
 end

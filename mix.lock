@@ -1,0 +1,3 @@
+%{
+  "dictionary": {:git, "https://github.com/stevepm/dictionary.git", "6d8bd8dc6033cb8dfc69f83c81d71dc86fa12c60", []},
+}
